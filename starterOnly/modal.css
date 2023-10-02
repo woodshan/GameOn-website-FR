@@ -97,7 +97,26 @@ img {
   .topnav a.icon {
     float: right;
     display: block;
-    margin-top: -15px;
+    /* margin-top: -15px; */
+  }
+  
+/* Modification */
+  .header-logo {
+    height: 58px; 
+    display:flex;
+    align-items: center;
+  }
+
+  .header-logo img {
+    width: 103px;
+  }
+
+  .hero-headline {
+    font-size: 40px !important;
+  }
+
+  .hero-text {
+    font-size: 13px !important;
   }
 } 
 
