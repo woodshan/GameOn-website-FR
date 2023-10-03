@@ -29,3 +29,26 @@ closeButton.addEventListener("click", closeModal);
 function closeModal() {
   modalbg.style.display = "none";
 }
+
+
+// HANDLE FORM
+// DOM Elements
+const submitBtn = document.querySelector(".btn-submit");
+let firstName = document.querySelector("#first");
+let lastName = document.querySelector("#last");
+let email = document.querySelector("#email");
+let birthDate = document.querySelector("#birthdate");
+let quantity = document.querySelector("#quantity");
+
+submitBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  handleErrors();
+});
+
+function handleErrors() {
+  let nameRegExp = /^[a-zA-Z-àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\s\,\'\-]{2,}$/;
+  let emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+  let birthDateRegExp = /^[0-9]{2}[0-9]{2}[0-9]{4}$/;
+
+  console.log(nameRegExp.test(firstName.value));
+}
