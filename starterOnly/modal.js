@@ -43,22 +43,6 @@ let quantity = document.querySelector("#quantity");
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
   handleErrors(e);
-
-
-
-  // Handle radio button
-  let checkRadios = document.querySelectorAll(".formData .checkbox-input");
-  for(let checkRadio of checkRadios) {
-    // console.log(checkRadio.type);
-    if(checkRadio.type == "radio" && checkRadio.checked == true) {
-      // console.log(checkBox.checked)
-      console.log("Une case radio a été coché")
-    }
-
-    if(checkRadio.id == "checkbox1" && checkRadio.checked == false) {
-      console.log("décoché les conditions")
-    }
-  }
 });
 
 function handleErrors(event) {
@@ -67,17 +51,18 @@ function handleErrors(event) {
   const birthDateRegExp = /^([1-2][0-9]{3})+[-/]([0-9]{2})+[-/]([0-9]{2})$/;
   const quantityRegExp = /^[0-9]{1,}$/;
 
+  // Unchecked checkbox counter
+  let countUnchecked = 0;
+
   let checkFirstName =  checkValues(nameRegExp, firstName, "Vous devez saisir au minimum 2 caractères.");
   let checkLastName = checkValues(nameRegExp, lastName, "Vous devez saisir au minimum 2 caractères.");
   let checkEmail = checkValues(emailRegExp, email, "Vous devez saisir une adresse email valide.");
   let checkBirthDate = checkValues(birthDateRegExp, birthDate, "Vous devez saisir une date de naissance valide au format aaaa-mm-jj.");
   let checkQuantity = checkValues(quantityRegExp, quantity, "Veuillez rentrer une valeur valide.");
+  let checkCheckBoxes = handleCheckBoxes(countUnchecked);
 
-  // console.log(birthDate.value + " DATE")
-  // console.log(checkBirthDate);
-
-  if(checkFirstName && checkLastName && checkEmail && checkBirthDate && checkQuantity) {
-    console.log("hello");
+  if(checkFirstName && checkLastName && checkEmail && checkBirthDate && checkQuantity && checkCheckBoxes) {
+    console.log("Le formulaire est totalement correct.");
   } else {
     event.preventDefault();
     console.log("Une erreur dans le formulaire.");
@@ -95,4 +80,42 @@ function checkValues(regex, input, errorMsg) {
 
   let isCheck = regex.test(input.value);
   return isCheck;
+}
+
+function handleCheckBoxes(countUnchecked) {
+  let checkBoxes = document.querySelectorAll(".formData .checkbox-input");
+  let isRadioCheck = false;
+  let isCheck = false;
+
+  for(let checkBox of checkBoxes) {
+    if (checkBox.type == "radio" && checkBox.checked === false){
+      countUnchecked++
+      if(countUnchecked == 6) {
+        // console.log("Aucune case n'est coché");
+        checkBox.parentElement.setAttribute("data-error", "Vous devez cocher une case.");
+        checkBox.parentElement.setAttribute("data-error-visible", "true");
+        isRadioCheck = false
+      }
+    } else if(checkBox.type == "radio" && checkBox.checked == true) {
+      // console.log("Une case radio a été coché");
+      checkBox.parentElement.removeAttribute("data-error");
+      checkBox.parentElement.removeAttribute("data-error-visible");
+      isRadioCheck = true;
+    } 
+
+    if(checkBox.id == "checkbox1" && checkBox.checked == false) {
+      checkBox.parentElement.setAttribute("data-error", "Vous devez avoir lu et accepté les conditions d'utilisation.");
+      checkBox.parentElement.setAttribute("data-error-visible", "true");
+      isCheck = false;
+    } else if (checkBox.id == "checkbox1" && checkBox.checked == true){
+      // console.log("La checkbox est coché");
+      checkBox.parentElement.removeAttribute("data-error");
+      checkBox.parentElement.removeAttribute("data-error-visible");
+      isCheck = true;
+    }
+  }
+  
+  if(isRadioCheck && isCheck) {
+    return true;
+  }
 }
