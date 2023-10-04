@@ -43,24 +43,40 @@ let quantity = document.querySelector("#quantity");
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
   handleErrors(e);
+
+
+
+  // Handle radio button
+  let checkRadios = document.querySelectorAll(".formData .checkbox-input");
+  for(let checkRadio of checkRadios) {
+    // console.log(checkRadio.type);
+    if(checkRadio.type == "radio" && checkRadio.checked == true) {
+      // console.log(checkBox.checked)
+      console.log("Une case radio a été coché")
+    }
+
+    if(checkRadio.id == "checkbox1" && checkRadio.checked == false) {
+      console.log("décoché les conditions")
+    }
+  }
 });
 
 function handleErrors(event) {
   const nameRegExp = /^[a-zA-Z-àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\s\,\'\-]{2,}$/;
   const emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
-  const birthDateRegExp = /^([0-9]{4})+[-/]([0-9][0-9])+[-/]([0-9][0-9])$/;
-
-  // 21-01-2023 DATE
-  // 0001-01-01 DATE
+  const birthDateRegExp = /^([1-2][0-9]{3})+[-/]([0-9]{2})+[-/]([0-9]{2})$/;
+  const quantityRegExp = /^[0-9]{1,}$/;
 
   let checkFirstName =  checkValues(nameRegExp, firstName, "Vous devez saisir au minimum 2 caractères.");
   let checkLastName = checkValues(nameRegExp, lastName, "Vous devez saisir au minimum 2 caractères.");
   let checkEmail = checkValues(emailRegExp, email, "Vous devez saisir une adresse email valide.");
-  let checkBirthDate = checkValues(birthDateRegExp, birthDate, "Vous devez saisir une date de naissance valide");
-  console.log(birthDate.value + " DATE")
-  console.log(checkBirthDate);
+  let checkBirthDate = checkValues(birthDateRegExp, birthDate, "Vous devez saisir une date de naissance valide au format aaaa-mm-jj.");
+  let checkQuantity = checkValues(quantityRegExp, quantity, "Veuillez rentrer une valeur valide.");
 
-  if(checkFirstName && checkLastName && checkEmail) {
+  // console.log(birthDate.value + " DATE")
+  // console.log(checkBirthDate);
+
+  if(checkFirstName && checkLastName && checkEmail && checkBirthDate && checkQuantity) {
     console.log("hello");
   } else {
     event.preventDefault();
