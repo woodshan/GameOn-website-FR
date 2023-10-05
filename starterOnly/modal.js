@@ -9,6 +9,7 @@ function editNav() {
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");
+const modalBody = document.querySelector(".modal-body");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const closeButton = document.querySelector(".close");
@@ -25,7 +26,9 @@ function launchModal() {
 // Close Modal on Click
 closeButton.addEventListener("click", closeModal);
 
-// Close modal
+/**
+ * Close Modal
+ */
 function closeModal() {
   modalbg.style.display = "none";
 }
@@ -33,66 +36,94 @@ function closeModal() {
 
 // HANDLE FORM
 // DOM Elements
-let submitBtn = document.querySelector(".btn-submit");
-let firstName = document.querySelector("#first");
-let lastName = document.querySelector("#last");
-let email = document.querySelector("#email");
-let birthDate = document.querySelector("#birthdate");
-let quantity = document.querySelector("#quantity");
+const submitBtn = document.querySelector(".btn-submit");
+const firstName = document.querySelector("#first");
+const lastName = document.querySelector("#last");
+const email = document.querySelector("#email");
+const birthDate = document.querySelector("#birthdate");
+const quantity = document.querySelector("#quantity");
 
+// Handle errors & validation on submit btn
 submitBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  handleErrors(e);
+
+  // If form are correct display confirmation modal
+  if(handleErrors()) {
+    confirmation();
+  }
 });
 
-function handleErrors(event) {
+/**
+ * Handle errors form
+ * @returns boolean
+ */
+function handleErrors() {
+  // Regexs creation
   const nameRegExp = /^[a-zA-Z-àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\s\,\'\-]{2,}$/;
   const emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
   const birthDateRegExp = /^([1-2][0-9]{3})+[-/]([0-9]{2})+[-/]([0-9]{2})$/;
   const quantityRegExp = /^[0-9]{1,}$/;
 
-  // Unchecked checkbox counter
+  // Unchecked counter
   let countUnchecked = 0;
 
-  let checkFirstName =  checkValues(nameRegExp, firstName, "Vous devez saisir au minimum 2 caractères.");
-  let checkLastName = checkValues(nameRegExp, lastName, "Vous devez saisir au minimum 2 caractères.");
-  let checkEmail = checkValues(emailRegExp, email, "Vous devez saisir une adresse email valide.");
-  let checkBirthDate = checkValues(birthDateRegExp, birthDate, "Vous devez saisir une date de naissance valide au format aaaa-mm-jj.");
-  let checkQuantity = checkValues(quantityRegExp, quantity, "Veuillez rentrer une valeur valide.");
-  let checkCheckBoxes = handleCheckBoxes(countUnchecked);
+  // Check if form values are correct & implement errors
+  const checkFirstName =  checkValues(nameRegExp, firstName, "Vous devez saisir au minimum 2 caractères.");
+  const checkLastName = checkValues(nameRegExp, lastName, "Vous devez saisir au minimum 2 caractères.");
+  const checkEmail = checkValues(emailRegExp, email, "Vous devez saisir une adresse email valide.");
+  const checkBirthDate = checkValues(birthDateRegExp, birthDate, "Vous devez saisir une date de naissance valide au format aaaa-mm-jj.");
+  const checkQuantity = checkValues(quantityRegExp, quantity, "Veuillez rentrer une valeur valide.");
+  const checkCheckBoxes = handleCheckBoxes(countUnchecked);
 
+  // Check if all the form values are correct & return boolean
   if(checkFirstName && checkLastName && checkEmail && checkBirthDate && checkQuantity && checkCheckBoxes) {
     console.log("Le formulaire est totalement correct.");
+    return true;
   } else {
-    event.preventDefault();
     console.log("Une erreur dans le formulaire.");
+    return false;
   }
 }
 
+/**
+ * Test regex & add errors msg
+ * @param {object} regex 
+ * @param {object} input HTMLElement
+ * @param {string} errorMsg 
+ * @returns boolean
+ */
 function checkValues(regex, input, errorMsg) {
   if(!regex.test(input.value)) {
     input.parentElement.setAttribute("data-error", errorMsg);
     input.parentElement.setAttribute("data-error-visible", "true");
+    return false;
   } else {
     input.parentElement.removeAttribute("data-error");
     input.parentElement.removeAttribute("data-error-visible");
+    return true;
   }
-
-  let isCheck = regex.test(input.value);
-  return isCheck;
 }
 
+/**
+ * Handle check radio, checkboxes & set errors msg
+ * @param {number} countUnchecked 
+ * @returns boolean
+ */
 function handleCheckBoxes(countUnchecked) {
+  // Select checkBoxes
   let checkBoxes = document.querySelectorAll(".formData .checkbox-input");
+
+  // Set unchecked
   let isRadioCheck = false;
   let isCheck = false;
 
+  // Handle radio Btn
   for(let checkBox of checkBoxes) {
     if (checkBox.type == "radio" && checkBox.checked === false){
       countUnchecked++
       if(countUnchecked == 6) {
         // console.log("Aucune case n'est coché");
-        checkBox.parentElement.setAttribute("data-error", "Vous devez cocher une case.");
+        checkBox.parentElement.setAttribute("data-error", "Vous devez choisir une option.");
         checkBox.parentElement.setAttribute("data-error-visible", "true");
         isRadioCheck = false
       }
@@ -103,8 +134,9 @@ function handleCheckBoxes(countUnchecked) {
       isRadioCheck = true;
     } 
 
+    // Handle terms of use btn
     if(checkBox.id == "checkbox1" && checkBox.checked == false) {
-      checkBox.parentElement.setAttribute("data-error", "Vous devez avoir lu et accepté les conditions d'utilisation.");
+      checkBox.parentElement.setAttribute("data-error", "Vous devez vérifier que vous acceptez les termes et conditions.");
       checkBox.parentElement.setAttribute("data-error-visible", "true");
       isCheck = false;
     } else if (checkBox.id == "checkbox1" && checkBox.checked == true){
@@ -115,7 +147,62 @@ function handleCheckBoxes(countUnchecked) {
     }
   }
   
+  // Check if radio & checkbox are checked
   if(isRadioCheck && isCheck) {
     return true;
+  } else {
+    return false;
   }
+}
+
+/**
+ * Add & style modal confirmation
+ */
+function confirmation() {
+  let confirmationBody = createElement("div", modalContent);
+  let spacer = createElement("div", confirmationBody);
+  let confirmationMsg = createElement("p", confirmationBody);
+  let confirmationBtn = createElement("input", confirmationBody);
+
+  // Style
+  modalBody.style.display = "none";
+  // Modal Body
+  confirmationBody.style.minHeight = "50vh";
+  confirmationBody.style.display = "flex";
+  confirmationBody.style.flexDirection = "column";
+  confirmationBody.style.justifyContent = "space-between";
+  // Message
+  confirmationMsg.style.textAlign = "center";
+  confirmationMsg.style.fontSize = "36px";
+  confirmationMsg.style.fontWeight = "400";
+
+  // Classes
+  confirmationBody.classList.add("modal-body");
+  confirmationBtn.classList.add("btn-submit");
+
+  // Message
+  confirmationMsg.innerText = "Merci pour votre inscription";
+
+  // Button
+  confirmationBtn.setAttribute("type", "button");
+  confirmationBtn.setAttribute("value", "Fermer");
+
+  // Event on close Button
+  confirmationBtn.addEventListener("click", () => {
+    modalbg.style.display = "none";
+  });
+};
+
+/**
+ * Create element in DOM
+ * @param {string} type 
+ * @param {object} parent HTMLElement
+ * @returns object
+ */
+function createElement(type, parent) {
+  let element = document.createElement(type);
+
+  parent.append(element);
+
+  return element;
 }
