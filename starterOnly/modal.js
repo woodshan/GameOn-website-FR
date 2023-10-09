@@ -173,17 +173,3 @@ function confirmation() {
     background.style.overflowY = "auto";
   });
 };
-
-/**
- * Create element in DOM
- * @param {string} type 
- * @param {object} parent HTMLElement
- * @returns object
- */
-function createElement(type, parent) {
-  let element = document.createElement(type);
-
-  parent.append(element);
-
-  return element;
-}
