@@ -80,10 +80,8 @@ function handleErrors() {
 
   // Check if all the form values are correct & return boolean
   if(checkFirstName && checkLastName && checkEmail && checkBirthDate && checkQuantity && checkCheckBoxes) {
-    console.log("Le formulaire est totalement correct.");
     return true;
   } else {
-    console.log("Une erreur dans le formulaire.");
     return false;
   }
 }
