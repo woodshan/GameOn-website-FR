@@ -8,6 +8,7 @@ function editNav() {
 }
 
 // DOM Elements
+const background = document.querySelector("body");
 const modalbg = document.querySelector(".bground");
 const modalBody = document.querySelector(".modal-body");
 const modalBtn = document.querySelectorAll(".modal-btn");
@@ -21,6 +22,7 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
+  background.style.overflowY = "hidden";
 }
 
 // Close Modal on Click
@@ -31,6 +33,7 @@ closeButton.addEventListener("click", closeModal);
  */
 function closeModal() {
   modalbg.style.display = "none";
+  background.style.overflowY = "auto";
 }
 
 
@@ -159,37 +162,17 @@ function handleCheckBoxes(countUnchecked) {
  * Add & style modal confirmation
  */
 function confirmation() {
-  let confirmationBody = createElement("div", modalContent);
-  let spacer = createElement("div", confirmationBody);
-  let confirmationMsg = createElement("p", confirmationBody);
-  let confirmationBtn = createElement("input", confirmationBody);
+  let confirmationBody = document.querySelector(".modal-confirmation");
+  let confirmationBtn = document.querySelector(".confirmation-btn");
 
   // Style
   modalBody.style.display = "none";
-  // Modal Body
-  confirmationBody.style.minHeight = "50vh";
   confirmationBody.style.display = "flex";
-  confirmationBody.style.flexDirection = "column";
-  confirmationBody.style.justifyContent = "space-between";
-  // Message
-  confirmationMsg.style.textAlign = "center";
-  confirmationMsg.style.fontSize = "36px";
-  confirmationMsg.style.fontWeight = "400";
-
-  // Classes
-  confirmationBody.classList.add("modal-body");
-  confirmationBtn.classList.add("btn-submit");
-
-  // Message
-  confirmationMsg.innerText = "Merci pour votre inscription";
-
-  // Button
-  confirmationBtn.setAttribute("type", "button");
-  confirmationBtn.setAttribute("value", "Fermer");
 
   // Event on close Button
   confirmationBtn.addEventListener("click", () => {
     modalbg.style.display = "none";
+    background.style.overflowY = "auto";
   });
 };
 
