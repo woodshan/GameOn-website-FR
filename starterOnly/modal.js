@@ -16,17 +16,14 @@ const formData = document.querySelectorAll(".formData");
 const closeButton = document.querySelector(".close");
 const modalContent = document.querySelector(".content");
 
-// launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
   background.style.overflowY = "hidden";
 }
 
-// Close Modal on Click
-closeButton.addEventListener("click", closeModal);
+// launch modal event
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 /**
  * Close Modal
@@ -34,7 +31,10 @@ closeButton.addEventListener("click", closeModal);
 function closeModal() {
   modalbg.style.display = "none";
   background.style.overflowY = "auto";
-}
+};
+
+// Close Modal on Click
+closeButton.addEventListener("click", closeModal);
 
 
 // HANDLE FORM
@@ -45,46 +45,6 @@ const lastName = document.querySelector("#last");
 const email = document.querySelector("#email");
 const birthDate = document.querySelector("#birthdate");
 const quantity = document.querySelector("#quantity");
-
-// Handle errors & validation on submit btn
-submitBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  // If form are correct display confirmation modal
-  if(handleErrors()) {
-    confirmation();
-  }
-});
-
-/**
- * Handle errors form
- * @returns boolean
- */
-function handleErrors() {
-  // Regexs creation
-  const nameRegExp = /^[a-zA-Z-àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\s\,\'\-]{2,}$/;
-  const emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
-  const birthDateRegExp = /^([1-2][0-9]{3})+[-/]([0-9]{2})+[-/]([0-9]{2})$/;
-  const quantityRegExp = /^[0-9]{1,}$/;
-
-  // Unchecked counter
-  let countUnchecked = 0;
-
-  // Check if form values are correct & implement errors
-  const checkFirstName =  checkValues(nameRegExp, firstName, "Vous devez saisir au minimum 2 caractères.");
-  const checkLastName = checkValues(nameRegExp, lastName, "Vous devez saisir au minimum 2 caractères.");
-  const checkEmail = checkValues(emailRegExp, email, "Vous devez saisir une adresse email valide.");
-  const checkBirthDate = checkValues(birthDateRegExp, birthDate, "Vous devez saisir une date de naissance valide au format aaaa-mm-jj.");
-  const checkQuantity = checkValues(quantityRegExp, quantity, "Veuillez rentrer une valeur valide.");
-  const checkCheckBoxes = handleCheckBoxes(countUnchecked);
-
-  // Check if all the form values are correct & return boolean
-  if(checkFirstName && checkLastName && checkEmail && checkBirthDate && checkQuantity && checkCheckBoxes) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
 /**
  * Test regex & add errors msg
@@ -157,6 +117,36 @@ function handleCheckBoxes(countUnchecked) {
 }
 
 /**
+ * Handle errors form
+ * @returns boolean
+ */
+function handleErrors() {
+  // Regexs creation
+  const nameRegExp = /^[a-zA-Z-àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\s\,\'\-]{2,}$/;
+  const emailRegExp = /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/;
+  const birthDateRegExp = /^([1-2][0-9]{3})+[-/]([0-9]{2})+[-/]([0-9]{2})$/;
+  const quantityRegExp = /^[0-9]{1,}$/;
+
+  // Unchecked counter
+  let countUnchecked = 0;
+
+  // Check if form values are correct & implement errors
+  const checkFirstName =  checkValues(nameRegExp, firstName, "Vous devez saisir au minimum 2 caractères.");
+  const checkLastName = checkValues(nameRegExp, lastName, "Vous devez saisir au minimum 2 caractères.");
+  const checkEmail = checkValues(emailRegExp, email, "Vous devez saisir une adresse email valide.");
+  const checkBirthDate = checkValues(birthDateRegExp, birthDate, "Vous devez saisir une date de naissance valide au format aaaa-mm-jj.");
+  const checkQuantity = checkValues(quantityRegExp, quantity, "Veuillez rentrer une valeur valide.");
+  const checkCheckBoxes = handleCheckBoxes(countUnchecked);
+
+  // Check if all the form values are correct & return boolean
+  if(checkFirstName && checkLastName && checkEmail && checkBirthDate && checkQuantity && checkCheckBoxes) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
  * Add & style modal confirmation
  */
 function confirmation() {
@@ -173,3 +163,13 @@ function confirmation() {
     background.style.overflowY = "auto";
   });
 };
+
+// Handle errors & validation on submit btn
+submitBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  // If form are correct display confirmation modal
+  if(handleErrors()) {
+    confirmation();
+  }
+});
