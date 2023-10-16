@@ -67,10 +67,9 @@ function checkValues(regex, input, errorMsg) {
 
 /**
  * Handle check radio, checkboxes & set errors msg
- * @param {number} countUnchecked 
  * @returns boolean
  */
-function handleCheckBoxes(countUnchecked) {
+function handleCheckBoxes() {
   // Select checkBoxes
   let checkBoxes = document.querySelectorAll(".formData .checkbox-input");
 
@@ -80,20 +79,17 @@ function handleCheckBoxes(countUnchecked) {
 
   // Handle radio Btn
   for(let checkBox of checkBoxes) {
-    if (checkBox.type == "radio" && checkBox.checked === false){
-      countUnchecked++
-      if(countUnchecked == 6) {
-        // console.log("Aucune case n'est coché");
-        checkBox.parentElement.setAttribute("data-error", "Vous devez choisir une option.");
-        checkBox.parentElement.setAttribute("data-error-visible", "true");
-        isRadioCheck = false
-      }
-    } else if(checkBox.type == "radio" && checkBox.checked == true) {
-      // console.log("Une case radio a été coché");
+
+    // Handle radios inputs
+    if(checkBox.type == "radio" && checkBox.checked) {
       checkBox.parentElement.removeAttribute("data-error");
       checkBox.parentElement.removeAttribute("data-error-visible");
       isRadioCheck = true;
-    } 
+    } else if(checkBox.type == "radio" && isRadioCheck == false){
+      checkBox.parentElement.setAttribute("data-error", "Vous devez choisir une option.");
+      checkBox.parentElement.setAttribute("data-error-visible", "true");
+      isRadioCheck = false
+    }
 
     // Handle terms of use btn
     if(checkBox.id == "checkbox1" && checkBox.checked == false) {
@@ -127,16 +123,13 @@ function handleErrors() {
   const birthDateRegExp = /^([1-2][0-9]{3})+[-/]([0-9]{2})+[-/]([0-9]{2})$/;
   const quantityRegExp = /^[0-9]{1,}$/;
 
-  // Unchecked counter
-  let countUnchecked = 0;
-
   // Check if form values are correct & implement errors
   const checkFirstName =  checkValues(nameRegExp, firstName, "Vous devez saisir au minimum 2 caractères.");
   const checkLastName = checkValues(nameRegExp, lastName, "Vous devez saisir au minimum 2 caractères.");
   const checkEmail = checkValues(emailRegExp, email, "Vous devez saisir une adresse email valide.");
   const checkBirthDate = checkValues(birthDateRegExp, birthDate, "Vous devez saisir une date de naissance valide au format aaaa-mm-jj.");
   const checkQuantity = checkValues(quantityRegExp, quantity, "Veuillez rentrer une valeur valide.");
-  const checkCheckBoxes = handleCheckBoxes(countUnchecked);
+  const checkCheckBoxes = handleCheckBoxes();
 
   // Check if all the form values are correct & return boolean
   if(checkFirstName && checkLastName && checkEmail && checkBirthDate && checkQuantity && checkCheckBoxes) {
