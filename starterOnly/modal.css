@@ -466,6 +466,7 @@ input {
   height: 100%;
   display: block;
   padding: 0;
+  object-fit: cover;
 }
 .copyrights {
   color: #fe142f;
@@ -536,10 +537,24 @@ footer {
 /* MODIFICATION */
 
 @media screen and (max-width: 1031px) {
+  /* Header */
   .topnav {
     display:flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  /* Hero section */
+  .hero-content {
+    min-width: 350px;
+  }
+
+  .hero-headline {
+    font-size: 4rem;
+  }
+
+  .hero-text {
+    font-size: 1.3rem
   }
 }
 
