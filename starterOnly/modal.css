@@ -68,15 +68,19 @@ img {
   display: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   .topnav a {display: none;}
   .topnav a.icon {
     float: right;
     display: block;
   }
+
+  .topnav {
+    display:block !important;
+  }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
     position: absolute;
@@ -530,6 +534,14 @@ footer {
 
 
 /* MODIFICATION */
+
+@media screen and (max-width: 1031px) {
+  .topnav {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
 /* Confirmation Modal */
 .modal-confirmation {
